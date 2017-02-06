@@ -1,0 +1,9 @@
+{
+  "name": "ckb-next-server",
+  "version": "0.1.0",
+  "description": "Control your keyboard colours from the cloud",
+  "main": "index.js",
+  "author": "Jonas Auer <jonas.auer.94@gmail.com>",
+  "license": "GPL-3.0",
+  "dependencies": {}
+}
