@@ -9,6 +9,7 @@
     "test": "standard"
   },
   "dependencies": {
+    "express": "^4.14.1",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
