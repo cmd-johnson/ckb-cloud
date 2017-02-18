@@ -1,5 +1,25 @@
 'use strict'
 
+const { LocalServer } = require('./lib/local-server')
+const { RESTServer } = require('./lib/rest-server')
+
+const localServer = new LocalServer()
+const restServer = new RESTServer()
+
+const LOCAL_SOCKET = '/tmp/ckb-cloud'
+const PORT = process.env.PORT || 3007
+
+localServer.connect(LOCAL_SOCKET)
+.then(status => {
+  console.log(`Local server ${status} at socket ${LOCAL_SOCKET}`)
+  return restServer.connect(PORT, localServer)
+})
+.then(port => {
+  console.log(`REST-server listening on port ${port}`)
+})
+.catch(console.error)
+
+/*
 const localServer = require('./lib/local-server')
 
 const express = require('express')
@@ -31,3 +51,4 @@ app.post('/keys/:key', (req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`)
 })
+*/

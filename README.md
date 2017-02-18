@@ -39,33 +39,51 @@ You don't have to (and actually shouldn't) change the default settings for now.
 You already should see some output on the server's console, stating that a client has connected.
 
 ## Usage
-Currently, ckb-cloud features four commands:
+Currently, ckb-cloud features the following commands:
 
-### List available keys
+### Clients
+
+#### Get connected clients
 ```
-# List all available keys
-curl http://localhost:3007/keys
+# List the client_ids of all connected clients
+curl http://localhost:3007/clients/
 ```
 
-### Set a key's colour
+#### Get details on a single client
 ```
-# Set the esc-key to red
+# Get more details on a single client (currently only returns the client_id)
+curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/
+```
+
+### Keys
+
+#### List available keys
+```
+# List all available keys for the given client
+curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/
+```
+
+### Key effects
+
+#### Set a key's colour
+```
+# Set the escape-key to red
 curl -X POST -H "Content-Type: application/json" \
-    -d '{"command":"set_key_color","color":"#f00"}' \
-    http://localhost:3007/keys/esc
+    -d '{"effect":"color","color":"#f00"}' \
+    http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/
 ```
 This command accepts any key listed under `/keys` and colors in various formats:
 \#RGB, #RRGGBB, #AARRGGBB and specifying colour names like 'red' or 'green' are all supported.
 
-### Set a key to animate its colour over time
+#### Set a key to animate its colour over time
 ```
 # Change the esc-key's color first to red and then animate it to green over a
 # period of 3 seconds, repeating the animation two times (making for a total of
 # 6 seconds animation time)
 curl -X POST -H "Content-Type: application/json" \
-    -d '{"command":"set_key_gradient","color_stops":[{"position":0,"color":"red"},
+    -d '{"effect":"gradient","color_stops":[{"position":0,"color":"red"},
          {"position":1,"color":"green"}],"duration":3,"loop_count":2}' \
-    http://localhost:3007/keys/esc
+    http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/
 ```
 The colour gradient is specified via the `color_stops`-array.
 Each element consists of a position within the gradient (between `0.0` and `1.0`) and a colour.
@@ -77,9 +95,10 @@ The colour for the current time-step is calculated by linearly interpolating bet
 The `duration` and `loop_count` parameters are optional and default both to 1.
 Setting the `loop_count` to `0` makes the animation continue ad infinitum, or at least until the key is set to some other effect or gets cleared.
 
-### Clear a key's colour
+#### Clear a key's active effect
 ```
-# Clear any active colour effect of the esc-key
-curl -X POST -H "Content-Type: application/json" \
-    -d '{"command":"clear_key"}' http://localhost:3007/keys/esc
+# Clear any active effect of the esc-key
+curl -X DELETE -H "Content-Type: application/json" \
+    -d '{"command":"clear_key"}' \
+    http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/
 ```
