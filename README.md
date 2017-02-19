@@ -51,7 +51,7 @@ curl http://localhost:3007/clients/
 
 #### Get details on a single client
 ```
-# Get more details on a single client (currently only returns the client_id)
+# Get more details on a single client
 curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/
 ```
 
@@ -63,21 +63,37 @@ curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/
 curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/
 ```
 
+#### Get details on a single key
+```
+# Get more details on the escape-key
+curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/
+```
+
 ### Key effects
+
+#### Get all effects active on a key
+```
+# Get a list of all active effects on the escape-key
+curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/
+```
+
+#### Get details on a single active effect
+```
+# Get more details on an effect active on the escape-key
+curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/{d51132a9-7034-4e51-beb0-5f89d3a5b972}/
+```
 
 #### Set a key's colour
 ```
 # Set the escape-key to red
-curl -X POST -H "Content-Type: application/json" \
-    -d '{"effect":"color","color":"#f00"}' \
-    http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/
+curl -X POST -H "Content-Type: application/json" -d '{"effect":"color","color":"#f00"}' http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/
 ```
 This command accepts any key listed under `/keys` and colors in various formats:
 \#RGB, #RRGGBB, #AARRGGBB and specifying colour names like 'red' or 'green' are all supported.
 
 #### Set a key to animate its colour over time
 ```
-# Change the esc-key's color first to red and then animate it to green over a
+# Change the escape-key's color first to red and then animate it to green over a
 # period of 3 seconds, repeating the animation two times (making for a total of
 # 6 seconds animation time)
 curl -X POST -H "Content-Type: application/json" \
@@ -97,8 +113,12 @@ Setting the `loop_count` to `0` makes the animation continue ad infinitum, or at
 
 #### Clear a key's active effect
 ```
-# Clear any active effect of the esc-key
-curl -X DELETE -H "Content-Type: application/json" \
-    -d '{"command":"clear_key"}' \
-    http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/
+# Clear a single effect on the escape-key
+curl -X DELETE -H http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/{d51132a9-7034-4e51-beb0-5f89d3a5b972}/
+```
+
+#### Clear all effects active on a key
+```
+# Clear any active effect on the escape-key
+curl -X DELETE http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/
 ```
