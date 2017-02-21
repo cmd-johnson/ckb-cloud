@@ -48,11 +48,13 @@ Currently, ckb-cloud features the following commands:
 # List the client_ids of all connected clients
 curl http://localhost:3007/clients/
 ```
+Note that the opening and closing curly braces of the client's UUID need to be URL-encoded when performing requests where the UUID is part of the URL.
+`{` URL-encoded is `%7B`, `}` becomes `%7D`.
 
 #### Get details on a single client
 ```
 # Get more details on a single client
-curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/
+curl http://localhost:3007/clients/%7Bc54485aa-d120-46ca-9ba4-8f8bdaee08ef%7D/
 ```
 
 ### Keys
@@ -60,13 +62,13 @@ curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/
 #### List available keys
 ```
 # List all available keys for the given client
-curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/
+curl http://localhost:3007/clients/%7Bc54485aa-d120-46ca-9ba4-8f8bdaee08ef%7D/keys/
 ```
 
 #### Get details on a single key
 ```
 # Get more details on the escape-key
-curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/
+curl http://localhost:3007/clients/%7Bc54485aa-d120-46ca-9ba4-8f8bdaee08ef%7D/keys/esc/
 ```
 
 ### Key effects
@@ -74,19 +76,21 @@ curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/e
 #### Get all effects active on a key
 ```
 # Get a list of all active effects on the escape-key
-curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/
+curl http://localhost:3007/clients/%7Bc54485aa-d120-46ca-9ba4-8f8bdaee08ef%7D/keys/esc/effects/
 ```
+Note that the opening and closing curly braces of the effects's UUID need to be URL-encoded when performing requests where the UUID is part of the URL.
+`{` URL-encoded is `%7B`, `}` becomes `%7D`.
 
 #### Get details on a single active effect
 ```
 # Get more details on an effect active on the escape-key
-curl http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/{d51132a9-7034-4e51-beb0-5f89d3a5b972}/
+curl http://localhost:3007/clients/%7Bc54485aa-d120-46ca-9ba4-8f8bdaee08ef%7D/keys/esc/effects/%7Bd51132a9-7034-4e51-beb0-5f89d3a5b972%7D/
 ```
 
 #### Set a key's colour
 ```
 # Set the escape-key to red
-curl -X POST -H "Content-Type: application/json" -d '{"effect":"color","color":"#f00"}' http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/
+curl -X POST -H "Content-Type: application/json" -d '{"effect":"color","color":"#f00"}' http://localhost:3007/clients/%7Bc54485aa-d120-46ca-9ba4-8f8bdaee08ef%7D/keys/esc/effects/
 ```
 This command accepts any key listed under `/keys` and colors in various formats:
 \#RGB, #RRGGBB, #AARRGGBB and specifying colour names like 'red' or 'green' are all supported.
@@ -99,7 +103,7 @@ This command accepts any key listed under `/keys` and colors in various formats:
 curl -X POST -H "Content-Type: application/json" \
     -d '{"effect":"gradient","color_stops":[{"position":0,"color":"red"},
          {"position":1,"color":"green"}],"duration":3,"loop_count":2}' \
-    http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/
+    http://localhost:3007/clients/%7Bc54485aa-d120-46ca-9ba4-8f8bdaee08ef%7D/keys/esc/effects/
 ```
 The colour gradient is specified via the `color_stops`-array.
 Each element consists of a position within the gradient (between `0.0` and `1.0`) and a colour.
@@ -114,11 +118,11 @@ Setting the `loop_count` to `0` makes the animation continue ad infinitum, or at
 #### Clear a key's active effect
 ```
 # Clear a single effect on the escape-key
-curl -X DELETE -H http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/{d51132a9-7034-4e51-beb0-5f89d3a5b972}/
+curl -X DELETE -H http://localhost:3007/clients/%7Bc54485aa-d120-46ca-9ba4-8f8bdaee08ef%7D/keys/esc/effects/%7Bd51132a9-7034-4e51-beb0-5f89d3a5b972%7D/
 ```
 
 #### Clear all effects active on a key
 ```
 # Clear any active effect on the escape-key
-curl -X DELETE http://localhost:3007/clients/{c54485aa-d120-46ca-9ba4-8f8bdaee08ef}/keys/esc/effects/
+curl -X DELETE http://localhost:3007/clients/%7Bc54485aa-d120-46ca-9ba4-8f8bdaee08ef%7D/keys/esc/effects/
 ```
