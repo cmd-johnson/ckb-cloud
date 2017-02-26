@@ -13,6 +13,7 @@
     "body-parser": "^1.16.0",
     "color-name": "^1.1.1",
     "express": "^4.14.1",
+    "osprey": "https://github.com/mulesoft/osprey.git#d2572085abd1fd10c175f00454e899bd837cf945",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
