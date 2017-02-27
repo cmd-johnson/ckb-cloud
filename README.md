@@ -93,7 +93,7 @@ curl http://localhost:3007/clients/%7Bc54485aa-d120-46ca-9ba4-8f8bdaee08ef%7D/ke
 curl -X POST -H "Content-Type: application/json" -d '{"effect":"color","color":"#f00"}' http://localhost:3007/clients/%7Bc54485aa-d120-46ca-9ba4-8f8bdaee08ef%7D/keys/esc/effects/
 ```
 This command accepts any key listed under `/keys` and colors in various formats:
-\#RGB, #RRGGBB, #AARRGGBB and specifying colour names like 'red' or 'green' are all supported.
+\#RGB, #RGBA, #RRGGBB, #RRGGBBAA and specifying colour names like 'red' or 'green', as well as semi-transparent named colours in the form of '50% red' are supported.
 
 #### Set a key to animate its colour over time
 ```
