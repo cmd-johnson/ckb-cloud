@@ -6,17 +6,21 @@
   "author": "Jonas Auer <jonas.auer.94@gmail.com>",
   "license": "GPL-3.0",
   "scripts": {
-    "test": "standard"
+    "test": "standard",
+    "watch": "nodemon -e js,json,raml"
   },
   "dependencies": {
     "bluebird": "^3.4.7",
     "body-parser": "^1.16.0",
     "color-name": "^1.1.1",
     "express": "^4.14.1",
-    "osprey": "https://github.com/mulesoft/osprey.git#d2572085abd1fd10c175f00454e899bd837cf945",
+    "osprey": "https://github.com/cmd-johnson/osprey.git",
+    "osprey-method-handler": "https://github.com/cmd-johnson/osprey-method-handler.git",
+    "raml-validate": "https://github.com/cmd-johnson/node-raml-validate.git",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
+    "nodemon": "^1.11.0",
     "standard": "^8.6.0"
   }
 }
