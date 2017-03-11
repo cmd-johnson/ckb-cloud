@@ -6,7 +6,10 @@
   "author": "Jonas Auer <jonas.auer.94@gmail.com>",
   "license": "GPL-3.0",
   "scripts": {
-    "test": "standard",
+    "lint": "standard",
+    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec --bail",
+    "test-spec": "mocha -R spec --bail",
+    "test": "yarn run test-cov && yarn run test-spec",
     "watch": "nodemon -e js,json,raml"
   },
   "dependencies": {
@@ -20,7 +23,11 @@
     "uuid": "^3.0.1"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
+    "popsicle": "^9.1.0",
     "standard": "^8.6.0"
   }
 }
