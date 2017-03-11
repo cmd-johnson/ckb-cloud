@@ -1,6 +1,7 @@
 ckb-cloud
 =========
 [![Build Status](https://travis-ci.org/cmd-johnson/ckb-cloud.svg?branch=master)](https://travis-ci.org/cmd-johnson/ckb-cloud)
+[![Coverage Status](https://coveralls.io/repos/github/cmd-johnson/ckb-cloud/badge.svg?branch=master)](https://coveralls.io/github/cmd-johnson/ckb-cloud?branch=master)
 
 Control your keyboard colours from the cloud!
 
