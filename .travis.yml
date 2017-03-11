@@ -11,6 +11,5 @@ language: node_js
 node_js:
   - '7'
   - '6'
-  - '4'
 
 after_script: 'npm install coveralls@2 && cat ./coverage/lcov.info | coveralls'
