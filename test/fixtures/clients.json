@@ -1,0 +1,77 @@
+[
+  {
+    "id": "client1",
+    "keys": [
+      {
+        "id": "a",
+        "position": {
+          "x": 0,
+          "y": 2
+        },
+        "effects": [
+          {
+            "id": "colorEffect",
+            "effect": "color",
+            "color": "#ff0000ff"
+          },
+          {
+            "id": "gradientEffect",
+            "effect": "gradient",
+            "loop_count": 1,
+            "duration": 1,
+            "color_stops": [
+              {
+                "position": 0,
+                "color": "#ff0000ff"
+              },
+              {
+                "position": 1,
+                "color": "#00000000"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "position": {
+          "x": 1,
+          "y": 1
+        }
+      },
+      {
+        "id": "c",
+        "position": {
+          "x": 2,
+          "y": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "client2",
+    "keys": [
+      {
+        "id": "d",
+        "position": {
+          "x": 3,
+          "y": 5
+        }
+      },
+      {
+        "id": "e",
+        "position": {
+          "x": 4,
+          "y": 4
+        }
+      },
+      {
+        "id": "f",
+        "position": {
+          "x": 5,
+          "y": 3
+        }
+      }
+    ]
+  }
+]
