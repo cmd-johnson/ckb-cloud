@@ -21,6 +21,7 @@
     "osprey-method-handler": "https://github.com/cmd-johnson/osprey-method-handler.git",
     "raml-validate": "https://github.com/cmd-johnson/node-raml-validate.git",
     "lodash": "^4.17.4",
+    "supertest": "^3.0.0",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
@@ -28,7 +29,6 @@
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
-    "popsicle": "^9.1.0",
     "standard": "^8.6.0"
   }
 }
