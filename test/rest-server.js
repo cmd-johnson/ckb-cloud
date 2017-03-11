@@ -29,6 +29,19 @@ describe('REST Server', () => {
     commandHandler.clients = clients
   })
 
+  describe('/', () => {
+    it('should contain the server\'s version', done => {
+      request.get('/')
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .end((err, res) => {
+          if (err) return done(err)
+          expect(res.body).to.contain({ version: require('../package.json').version })
+          done()
+        })
+    })
+  })
+
   describe('/clients', () => {
     it('should list available clients', done => {
       request.get('/clients')
@@ -76,6 +89,12 @@ describe('REST Server', () => {
           done()
         })
     })
+
+    it('should reject requests with an invalid clientID', done => {
+      request.get('/clients/invalid/keys')
+        .expect(400)
+        .end(done)
+    })
   })
 
   describe('/clients/{client_id}/keys/{key_id}', () => {
@@ -96,7 +115,7 @@ describe('REST Server', () => {
     })
 
     it('should reject invalid keyIDs', done => {
-      request.get('/clients/client1/keys/xyz')
+      request.get('/clients/client1/keys/invalid')
         .expect(400)
         .end(done)
     })
@@ -111,6 +130,18 @@ describe('REST Server', () => {
           expect(res.body).to.deep.equal(commandHandler.clients[0].keys[0].effects)
           done()
         })
+    })
+
+    it('should reject requests with an invalid clientID', done => {
+      request.get('/clients/invalid/keys/a/effects')
+        .expect(400)
+        .end(done)
+    })
+
+    it('should reject requests with an invalid keyID', done => {
+      request.get('/clients/client1/keys/invalid/effects')
+        .expect(400)
+        .end(done)
     })
 
     it('should reject POSTing invalid new effects', done => {
@@ -130,6 +161,18 @@ describe('REST Server', () => {
         })
     })
 
+    it('should reject clear requests with an invalid clientID', done => {
+      request.delete('/clients/invalid/keys/a/effects')
+        .expect(400)
+        .end(done)
+    })
+
+    it('should reject clear requests with an invalid keyID', done => {
+      request.delete('/clients/client1/keys/xyz/effects')
+        .expect(400)
+        .end(done)
+    })
+
     describe('color-effect', () => {
       it('should accept and process POSTing a valid color-effect', done => {
         commandHandler.clients[0].keys[0].effects = []
@@ -146,6 +189,13 @@ describe('REST Server', () => {
             done()
           })
       })
+
+      it('should reject color-effects with an invalid color', done => {
+        request.post('/clients/client1/keys/a/effects')
+          .send({ effect: 'color', color: 'invalid' })
+          .expect(400)
+          .end(done)
+      })
     })
 
     describe('gradient-effect', () => {
@@ -154,6 +204,8 @@ describe('REST Server', () => {
         request.post('/clients/client1/keys/a/effects')
           .send({
             effect: 'gradient',
+            loop_count: 0,
+            duration: 2.5,
             color_stops: [
               { position: 0, color: '50% red' },
               { position: 0.33, color: 'transparent' },
@@ -167,8 +219,8 @@ describe('REST Server', () => {
             expect(commandHandler.clients[0].keys[0].effects).to.not.be.empty
             expect(commandHandler.clients[0].keys[0].effects[0]).to.contain({
               effect: 'gradient',
-              loop_count: 1,
-              duration: 1
+              loop_count: 0,
+              duration: 2.5
             })
             expect(commandHandler.clients[0].keys[0].effects[0].color_stops).to.deep.equal([
               { position: 0, color: '#ff00007f' },
@@ -179,11 +231,94 @@ describe('REST Server', () => {
             done()
           })
       })
+
+      it('should default to a single loop and a duration of 1s', done => {
+        commandHandler.clients[0].keys[0].effects = []
+        request.post('/clients/client1/keys/a/effects')
+          .send({
+            effect: 'gradient',
+            color_stops: [ { position: 0, color: '50% red' } ]
+          })
+          .expect(204)
+          .end((err, res) => {
+            if (err) return done(err)
+            expect(commandHandler.clients[0].keys[0].effects).to.not.be.empty
+            expect(commandHandler.clients[0].keys[0].effects[0]).to.contain({
+              loop_count: 1,
+              duration: 1
+            })
+            done()
+          })
+      })
+
+      it('should reject gradient-effects with an invalid duration', done => {
+        request.post('/clients/client1/keys/a/effects')
+          .send({
+            effect: 'gradient',
+            duration: 0,
+            color_stops: [ { position: 0, color: 'red' } ]
+          })
+          .expect(400)
+          .end(done)
+      })
+
+      it('should reject gradient-effects with an invalid loop count', done => {
+        request.post('/clients/client1/keys/a/effects')
+          .send({
+            effect: 'gradient',
+            loop_count: -1,
+            color_stops: [ { position: 0, color: 'red' } ]
+          })
+          .expect(400)
+          .end(done)
+      })
+
+      it('should reject gradient-effects with a color stop with an invalid position', done => {
+        request.post('/clients/client1/keys/a/effects')
+          .send({
+            effect: 'gradient',
+            color_stops: [ { position: Infinity, color: 'red' } ]
+          })
+          .expect(400)
+          .end(done)
+      })
+
+      it('should reject gradient-effects with a color stop with no color stops property', done => {
+        request.post('/clients/client1/keys/a/effects')
+          .send({
+            effect: 'gradient'
+          })
+          .expect(400)
+          .end(done)
+      })
+
+      it('should reject gradient-effects with a color stop with an invalid color', done => {
+        request.post('/clients/client1/keys/a/effects')
+          .send({
+            effect: 'gradient',
+            color_stops: [ { position: 0, color: 'invalid' } ]
+          })
+          .expect(400)
+          .end(done)
+      })
+
+      it('should reject gradient-effects with a color stop with unordered color stops', done => {
+        request.post('/clients/client1/keys/a/effects')
+          .send({
+            effect: 'gradient',
+            color_stops: [
+              { position: 1, color: 'red' },
+              { position: 0, color: 'transparent' }
+            ]
+          })
+          .expect(400)
+          .end(done)
+      })
     })
   })
 
   describe('/clients/{client_id}/keys/{key_id}/effects/{effect_id}', () => {
-    describe('color effect', () => {
+    describe('color-effect', () => {
       it('should list details of the given effect', done => {
         request.get('/clients/client1/keys/a/effects/colorEffect')
           .expect(200)
@@ -198,7 +333,7 @@ describe('REST Server', () => {
       })
     })
 
-    describe('gradient effect', () => {
+    describe('gradient-effect', () => {
       it('should list details of the given effect', done => {
         request.get('/clients/client1/keys/a/effects/gradientEffect')
           .expect(200)
@@ -235,6 +370,24 @@ describe('REST Server', () => {
           })
           done()
         })
+    })
+
+    it('should reject clear requests with an invalid clientID', done => {
+      request.delete('/clients/invalid/keys/a/effects/colorEffect')
+        .expect(400)
+        .end(done)
+    })
+
+    it('should reject clear requests with an invalid keyID', done => {
+      request.delete('/clients/client1/keys/invalid/effects/colorEffect')
+        .expect(400)
+        .end(done)
+    })
+
+    it('should reject clear requests with an invalid effectID', done => {
+      request.delete('/clients/client1/keys/a/effects/invalidEffect')
+        .expect(400)
+        .end(done)
     })
   })
 })
