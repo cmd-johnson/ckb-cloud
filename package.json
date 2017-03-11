@@ -9,7 +9,7 @@
     "lint": "standard",
     "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec --bail",
     "test-spec": "mocha -R spec --bail",
-    "test": "yarn run test-cov && yarn run test-spec",
+    "test": "yarn run lint && yarn run test-cov",
     "watch": "nodemon -e js,json,raml"
   },
   "dependencies": {
