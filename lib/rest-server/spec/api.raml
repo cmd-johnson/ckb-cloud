@@ -12,7 +12,13 @@ uses:
 types:
   Client:     !include types/client.raml
   Key:        !include types/key.raml
+  ApiRoot:    !include types/api-root.raml
 
+/:
+  get:
+    responses:
+      200:
+        body: ApiRoot
 /clients:
   type: { Collection.member: {resourceType: Client } }
   /{client_id}:
