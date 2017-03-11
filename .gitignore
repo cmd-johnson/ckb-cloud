@@ -54,3 +54,7 @@ typings/
 
 # dotenv environment variables file
 .env
+
+# tag file
+.tags
+.tags_swap
