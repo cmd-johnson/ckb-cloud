@@ -20,6 +20,7 @@
     "osprey": "https://github.com/cmd-johnson/osprey.git",
     "osprey-method-handler": "https://github.com/cmd-johnson/osprey-method-handler.git",
     "raml-validate": "https://github.com/cmd-johnson/node-raml-validate.git",
+    "lodash": "^4.17.4",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
