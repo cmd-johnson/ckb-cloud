@@ -1,0 +1,41 @@
+#%RAML 1.0 Library
+types:
+  Color:
+    type: string
+    pattern: "^(?:(?:(\\d{1,3}|\\d{0,3}\\.\\d+)%\\s*)?([a-z]+)|#([0-9a-f]{3}(?:[0-9a-f](?:[0-9a-f]{2}){0,2})?))$"
+    examples:
+      named: "red"
+      namedAlpha: "50% red"
+      rgb: "#f00"
+      rgba: "#f008"
+      rrggbb: "#ff0000"
+      rrggbbaa: "#ff000080"
+  ColorStop:
+    properties:
+      position: number
+      color: Color
+    additionalProperties: false
+  Effect:
+    discriminator: effect
+    properties:
+      effect: string
+  ColorEffect:
+    type: Effect
+    discriminatorValue: "color"
+    properties:
+      color: Color
+    additionalProperties: false
+  GradientEffect:
+    type: Effect
+    discriminatorValue: "gradient"
+    properties:
+      color_stops:
+        type: array
+        items: ColorStop
+      loop_count?:
+        type: integer
+        default: 1
+      duration?:
+        type: number
+        default: 1
+    additionalProperties: false

@@ -5,31 +5,26 @@ protocols: [ HTTP, HTTPS ]
 baseUri: localhost:3007/{version}
 mediaType: application/json
 
-types:
-  Client:         !include types/client.raml
-  Key:            !include types/key.raml
-  Color:          !include types/color.raml
-  ColorStop:      !include types/colorStop.raml
-  Effect:         !include types/effect.raml
-  ColorEffect:    !include types/colorEffect.raml
-  GradientEffect: !include types/gradientEffect.raml
+uses:
+  Effects:    libraries/types/effects.raml
+  Collection: libraries/resourceTypes/collection.raml
 
-resourceTypes:
-  collection:     !include resourceTypes/collection.raml
-  member:         !include resourceTypes/member.raml
+types:
+  Client:     !include types/client.raml
+  Key:        !include types/key.raml
 
 /clients:
-  type: { collection: { resourceType: Client } }
+  type: { Collection.member: {resourceType: Client } }
   /{client_id}:
-    type: { member: { resourceType: Client } }
+    type: { Collection.member: { resourceType: Client } }
     /keys:
-      type: { collection: { resourceType: Key } }
+      type: { Collection.collection: { resourceType: Key } }
       /{key_id}:
-        type: { member: { resourceType: Key } }
+        type: { Collection.member: { resourceType: Key } }
         /effects:
-          type: { collection: { resourceType: Effect } }
+          type: { Collection.collection: { resourceType : Effects.Effect } }
           post:
           delete:
           /{effect_id}:
-            type: { member: { resourceType: Effect } }
+            type: { Collection.member: { resourceType: Effects.Effect } }
             delete:

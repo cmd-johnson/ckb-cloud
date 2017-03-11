@@ -1,0 +1,34 @@
+#%RAML 1.0 Library
+resourceTypes:
+  collection:
+    get:
+      responses:
+        200:
+          description: Collection of <<resourceType | !pluralize>>
+          body:
+            application/json:
+              type: <<resourceType>>[]
+    post?:
+      body:
+        type: <<resourceType>>
+      responses:
+        201:
+          headers:
+            Location:
+              description: The URL of the newly created <<resourceType>>
+    delete?:
+      responses:
+        204:
+
+  member:
+    get:
+      responses:
+        200:
+          description: A single <<resourceType>>
+          body:
+            application/json:
+              type: <<resourceType>>
+    delete?:
+      responses:
+        204:
+          description: Deletes the <<resourceType>>
