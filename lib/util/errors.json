@@ -1,0 +1,45 @@
+{
+  "invalidErrorType": {
+    "status": 500
+  },
+  "invalidErrorID": {
+    "message": "Invalid errorID",
+    "status": 500
+  },
+  "internalServerError": {
+    "message": "Internal server error",
+    "status": 500
+  },
+  "invalidClientID": {
+    "message": "Invalid client_id",
+    "status": 404
+  },
+  "invalidKeyID": {
+    "message": "Invalid key_id",
+    "status": 404
+  },
+  "invalidEffectID": {
+    "message": "Invalid effect_id",
+    "status": 404
+  },
+  "invalidEffectType": {
+    "message": "Invalid effect type",
+    "status": 400
+  },
+  "invalidDuration": {
+    "message": "Invalid duration",
+    "status": 400
+  },
+  "invalidLoopCount": {
+    "message": "Invalid loop_count",
+    "status": 400
+  },
+  "invalidColorStops": {
+    "message": "Invalid color_stops",
+    "status": 400
+  },
+  "invalidColor": {
+    "message": "Invalid color",
+    "status": 400
+  }
+}

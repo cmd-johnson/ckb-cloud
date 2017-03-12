@@ -1,5 +1,6 @@
 'use strict'
 
+const { CkbError } = require('../../lib/util/error')
 const { CommandHandler } = require('../../lib/command-handler')
 
 const Promise = require('bluebird')
@@ -59,7 +60,7 @@ class MockCommandHandler extends CommandHandler {
           key.effects.splice(index, 1)
           resolve()
         } else {
-          reject('Invalid effectID')
+          reject(new CkbError('invalidEffectID', null, { effect_id: effectID }))
         }
       }))
   }
@@ -67,21 +68,21 @@ class MockCommandHandler extends CommandHandler {
   _findClient (clientID) {
     return new Promise((resolve, reject) => {
       const client = this.clients.find(client => client.id === clientID)
-      client ? resolve(client) : reject('Invalid clientID')
+      client ? resolve(client) : reject(new CkbError('invalidClientID', null, { client_id: clientID }))
     })
   }
   _findKey (clientID, keyID) {
     return this._findClient(clientID)
       .then(client => new Promise((resolve, reject) => {
         const key = (client.keys || []).find(key => key.id === keyID)
-        key ? resolve(key) : reject('Invalid keyID')
+        key ? resolve(key) : reject(new CkbError('invalidKeyID', null, { key_id: keyID }))
       }))
   }
   _findEffect (clientID, keyID, effectID) {
     return this._findKey(clientID, keyID)
       .then(key => new Promise((resolve, reject) => {
         const effect = (key.effects || []).find(effect => effect.id === effectID)
-        effect ? resolve(effect) : reject('Invalid effectID')
+        effect ? resolve(effect) : reject(new CkbError('invalidEffectID', null, { effect_id: effectID }))
       }))
   }
 }

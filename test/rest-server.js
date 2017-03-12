@@ -17,11 +17,9 @@ describe('REST Server', () => {
   before(done => {
     server = new RESTServer()
     commandHandler = new MockCommandHandler()
-    server.init(commandHandler, (err, req, res, next) => {
-      res.status(400).json(err)
-    })
-    .then(() => { request = supertest(server.app) })
-    .then(done)
+    server.init(commandHandler)
+      .then(() => { request = supertest(server.app) })
+      .then(done)
   })
 
   beforeEach(() => {
@@ -70,7 +68,7 @@ describe('REST Server', () => {
     })
     it('should reject invalid clientIDs', done => {
       request.get('/clients/invalidClient')
-        .expect(400)
+        .expect(404)
         .end(done)
     })
   })
@@ -92,7 +90,7 @@ describe('REST Server', () => {
 
     it('should reject requests with an invalid clientID', done => {
       request.get('/clients/invalid/keys')
-        .expect(400)
+        .expect(404)
         .end(done)
     })
   })
@@ -116,7 +114,7 @@ describe('REST Server', () => {
 
     it('should reject invalid keyIDs', done => {
       request.get('/clients/client1/keys/invalid')
-        .expect(400)
+        .expect(404)
         .end(done)
     })
   })
@@ -134,13 +132,13 @@ describe('REST Server', () => {
 
     it('should reject requests with an invalid clientID', done => {
       request.get('/clients/invalid/keys/a/effects')
-        .expect(400)
+        .expect(404)
         .end(done)
     })
 
     it('should reject requests with an invalid keyID', done => {
       request.get('/clients/client1/keys/invalid/effects')
-        .expect(400)
+        .expect(404)
         .end(done)
     })
 
@@ -163,13 +161,13 @@ describe('REST Server', () => {
 
     it('should reject clear requests with an invalid clientID', done => {
       request.delete('/clients/invalid/keys/a/effects')
-        .expect(400)
+        .expect(404)
         .end(done)
     })
 
     it('should reject clear requests with an invalid keyID', done => {
       request.delete('/clients/client1/keys/xyz/effects')
-        .expect(400)
+        .expect(404)
         .end(done)
     })
 
@@ -355,7 +353,7 @@ describe('REST Server', () => {
 
     it('should reject invalid effectIDs', done => {
       request.get('/clients/client1/keys/a/effects/invalidEffect')
-        .expect(400)
+        .expect(404)
         .end(done)
     })
 
@@ -374,19 +372,19 @@ describe('REST Server', () => {
 
     it('should reject clear requests with an invalid clientID', done => {
       request.delete('/clients/invalid/keys/a/effects/colorEffect')
-        .expect(400)
+        .expect(404)
         .end(done)
     })
 
     it('should reject clear requests with an invalid keyID', done => {
       request.delete('/clients/client1/keys/invalid/effects/colorEffect')
-        .expect(400)
+        .expect(404)
         .end(done)
     })
 
     it('should reject clear requests with an invalid effectID', done => {
       request.delete('/clients/client1/keys/a/effects/invalidEffect')
-        .expect(400)
+        .expect(404)
         .end(done)
     })
   })
