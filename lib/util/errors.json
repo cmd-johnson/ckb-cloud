@@ -6,6 +6,10 @@
     "message": "Invalid errorID",
     "status": 500
   },
+  "notOverridden": {
+    "message": "Not overridden",
+    "status": 500
+  },
   "internalServerError": {
     "message": "Internal server error",
     "status": 500
