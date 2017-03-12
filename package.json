@@ -17,10 +17,10 @@
     "body-parser": "^1.16.0",
     "color-name": "^1.1.1",
     "express": "^4.14.1",
+    "lodash": "^4.17.4",
     "osprey": "https://github.com/cmd-johnson/osprey.git",
     "osprey-method-handler": "https://github.com/cmd-johnson/osprey-method-handler.git",
     "raml-validate": "https://github.com/cmd-johnson/node-raml-validate.git",
-    "lodash": "^4.17.4",
     "supertest": "^3.0.0",
     "uuid": "^3.0.1"
   },
@@ -28,6 +28,7 @@
     "chai": "^3.5.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
+    "mute": "^2.0.6",
     "nodemon": "^1.11.0",
     "standard": "^8.6.0"
   }

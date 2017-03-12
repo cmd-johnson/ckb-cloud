@@ -1,11 +1,14 @@
 /* global describe, before, beforeEach, it */
 'use strict'
 
+const { CkbError } = require('../lib/util/error')
 const { RESTServer } = require('../lib/rest-server')
 const { MockCommandHandler } = require('./mocks/mock-command-handler')
 
 const { expect } = require('chai')
+const mute = require('mute')
 const path = require('path')
+const Promise = require('bluebird')
 const { readFileSync } = require('fs')
 const supertest = require('supertest')
 
@@ -25,6 +28,68 @@ describe('REST Server', () => {
   beforeEach(() => {
     const clients = JSON.parse(readFileSync(path.join(__dirname, 'fixtures', 'clients.json')))
     commandHandler.clients = clients
+  })
+
+  describe('HTTP server', () => {
+    it('should be able to listen on port 3007', done => {
+      server.listen(3007)
+        .then(({ server }) => {
+          server.close()
+          done()
+        })
+        .catch(done)
+    })
+
+    it('should not be able to listen on port -1', done => {
+      server.listen(-1)
+        .then(({ server }) => {
+          server.close()
+          done('Expected server to not start')
+        })
+        .catch(err => {
+          expect(err).to.be.ok
+          done()
+        })
+    })
+
+    it('should treat unknown error objects as invalidErrorType-errors', done => {
+      const listClientsHandler = commandHandler.listClients
+      commandHandler.listClients = () => Promise.reject('invalid')
+      const unmute = mute()
+
+      request.get('/clients')
+      .expect(500)
+      .end((err, res) => {
+        unmute()
+        commandHandler.listClients = listClientsHandler
+
+        if (err) return done(err)
+        expect(res.body).to.deep.equal({
+          status: 500
+        })
+        done()
+      })
+    })
+
+    it('should treat errors with invalid IDs as invalidErrorID-errors', done => {
+      const listClientsHandler = commandHandler.listClients
+      commandHandler.listClients = () => Promise.reject(new CkbError('invalid'))
+      const unmute = mute()
+
+      request.get('/clients')
+      .expect(500)
+      .end((err, res) => {
+        unmute()
+        commandHandler.listClients = listClientsHandler
+
+        if (err) return done(err)
+        expect(res.body).to.deep.equal({
+          message: 'Invalid errorID',
+          status: 500
+        })
+        done()
+      })
+    })
   })
 
   describe('/', () => {
