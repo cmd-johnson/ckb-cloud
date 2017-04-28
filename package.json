@@ -18,9 +18,7 @@
     "color-name": "^1.1.1",
     "express": "^4.14.1",
     "lodash": "^4.17.4",
-    "osprey": "https://github.com/cmd-johnson/osprey.git",
-    "osprey-method-handler": "https://github.com/cmd-johnson/osprey-method-handler.git",
-    "raml-validate": "https://github.com/cmd-johnson/node-raml-validate.git",
+    "osprey": "^0.4.1",
     "supertest": "^3.0.0",
     "uuid": "^3.0.1"
   },
